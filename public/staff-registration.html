@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>MEDICMAS — تسجيل الكوادر الطبية</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy-deep:#0a1830;
+    --navy:#0f2044;
+    --navy-mid:#16305e;
+    --gold:#c9a24d;
+    --gold-soft:#e2c883;
+    --gold-dim:#8a7332;
+    --ivory:#f3efe4;
+    --ivory-dim:#c9c4b6;
+    --field-bg:rgba(255,255,255,0.03);
+    --field-border:rgba(201,162,77,0.35);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{height:100%;}
+  body{
+    background:
+      radial-gradient(ellipse 900px 500px at 50% -10%, var(--navy-mid) 0%, var(--navy) 45%, var(--navy-deep) 100%);
+    font-family:'Tajawal',sans-serif;
+    color:var(--ivory);
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+  }
+
+  .wrap{
+    width:100%;
+    max-width:480px;
+    padding:36px 22px 50px;
+  }
+
+  .topbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:8px;
+  }
+
+  .back{
+    color:var(--gold);
+    font-size:22px;
+    text-decoration:none;
+    line-height:1;
+  }
+
+  .wordmark-mini{
+    font-family:'Cormorant Garamond', serif;
+    font-weight:600;
+    font-size:20px;
+    color:var(--gold-soft);
+    direction:ltr;
+  }
+  .wordmark-mini span{ color:var(--ivory); font-weight:500; }
+
+  .header{
+    margin-top:22px;
+    margin-bottom:6px;
+  }
+
+  .title-ar{
+    font-size:23px;
+    font-weight:700;
+    color:var(--ivory);
+  }
+
+  .title-en{
+    font-size:12px;
+    color:var(--gold-dim);
+    direction:ltr;
+    margin-top:4px;
+    letter-spacing:0.4px;
+  }
+
+  .rule{
+    width:64px;
+    height:1px;
+    background:linear-gradient(to right, var(--gold), transparent);
+    margin:16px 0 26px;
+  }
+
+  form{ display:flex; flex-direction:column; gap:18px; }
+
+  .field label{
+    display:block;
+    font-size:13.5px;
+    font-weight:500;
+    color:var(--ivory-dim);
+    margin-bottom:7px;
+  }
+
+  .field label .en{
+    font-size:10.5px;
+    color:var(--gold-dim);
+    direction:ltr;
+    display:inline-block;
+    margin-right:6px;
+  }
+
+  .field input[type="text"],
+  .field input[type="number"],
+  .field input[type="tel"],
+  .field input[type="email"],
+  .field select{
+    width:100%;
+    background:var(--field-bg);
+    border:1px solid var(--field-border);
+    border-radius:5px;
+    padding:12px 14px;
+    font-family:'Tajawal',sans-serif;
+    font-size:15px;
+    color:var(--ivory);
+    outline:none;
+    appearance:none;
+    -webkit-appearance:none;
+  }
+
+  .field select{
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23c9a24d' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;
+    background-position:left 14px center;
+    padding-left:32px;
+  }
+
+  .field select option{ background:#0f2044; color:var(--ivory); }
+
+  .field input:focus,
+  .field select:focus{
+    border-color:var(--gold);
+  }
+
+  .field input::placeholder{ color:rgba(243,239,228,0.35); }
+
+  optgroup{ font-weight:700; color:var(--gold); font-style:normal; }
+
+  .radio-row{
+    display:flex;
+    gap:12px;
+  }
+
+  .radio-opt{
+    flex:1;
+    border:1px solid var(--field-border);
+    border-radius:5px;
+    padding:12px 10px;
+    text-align:center;
+    cursor:pointer;
+    font-size:14px;
+    font-weight:500;
+    color:var(--ivory-dim);
+    position:relative;
+  }
+
+  .radio-opt input{
+    position:absolute;
+    opacity:0;
+    inset:0;
+    cursor:pointer;
+  }
+
+  .radio-opt.checked{
+    border-color:var(--gold);
+    color:var(--gold-soft);
+    background:rgba(201,162,77,0.08);
+  }
+
+  .submit-btn{
+    margin-top:10px;
+    background:linear-gradient(180deg, var(--gold-soft), var(--gold));
+    color:var(--navy-deep);
+    border:none;
+    border-radius:5px;
+    padding:15px;
+    font-family:'Tajawal',sans-serif;
+    font-size:16px;
+    font-weight:700;
+    cursor:pointer;
+  }
+
+  .submit-btn:active{ opacity:0.85; }
+
+  .note{
+    margin-top:14px;
+    font-size:12px;
+    color:var(--ivory-dim);
+    text-align:center;
+    line-height:1.7;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <a class="back" href="index.html">›</a>
+    <div class="wordmark-mini">MEDIC<span>MAS</span></div>
+  </div>
+
+  <div class="header">
+    <div class="title-ar">تسجيل الكوادر الطبية</div>
+    <div class="title-en">Medical Staff Registration</div>
+  </div>
+  <div class="rule"></div>
+
+  <form id="staffForm">
+
+    <div class="field">
+      <label>الاسم رباعي <span class="en">Full Name</span></label>
+      <input type="text" id="fullName" placeholder="الاسم الأول والثاني والثالث والرابع" required>
+    </div>
+
+    <div class="field">
+      <label>عدد سنين الخبرة <span class="en">Years of Experience</span></label>
+      <input type="number" id="yearsExperience" min="0" placeholder="مثال: 5" required>
+    </div>
+
+    <div class="field">
+      <label>السن <span class="en">Age</span></label>
+      <input type="number" id="age" min="18" max="75" placeholder="مثال: 29" required>
+    </div>
+
+    <div class="field">
+      <label>القسم / التخصص <span class="en">Specialty</span></label>
+      <select id="specialty" required>
+        <option value="" disabled selected>اختر التخصص</option>
+
+        <optgroup label="التمريض — Nursing">
+          <option>تمريض عام</option>
+          <option>تمريض عناية مركزة (ICU)</option>
+          <option>تمريض طوارئ (ER)</option>
+          <option>تمريض غرف عمليات</option>
+          <option>تمريض تخدير</option>
+          <option>تمريض أطفال</option>
+          <option>تمريض حديثي الولادة (NICU)</option>
+          <option>تمريض نساء وتوليد</option>
+          <option>تمريض باطنة</option>
+          <option>تمريض جراحة</option>
+          <option>تمريض قلب</option>
+          <option>تمريض كلى وغسيل كلوي</option>
+          <option>تمريض أورام</option>
