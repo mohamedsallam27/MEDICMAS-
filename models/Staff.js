@@ -46,6 +46,23 @@ const staffSchema = new mongoose.Schema(
     hasLicense: {
       type: Boolean,
       default: false
+    },
+    academicStatus: {
+      type: String,
+      required: true,
+      enum: [
+        'grad_institute',
+        'grad_college',
+        'student_institute',
+        'intern_institute',
+        'student_college',
+        'intern_college'
+      ]
+    },
+    graduationYear: {
+      type: Number,
+      required: false,
+      min: 1970
     }
   },
   {
