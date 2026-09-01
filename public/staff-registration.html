@@ -149,6 +149,24 @@
       </select>
     </div>
 
+    <div class="field">
+      <label><span>الحالة الدراسية</span><span class="en">Academic Status</span></label>
+      <select id="academicStatus" required>
+        <option value="" disabled selected>اختر الحالة الدراسية</option>
+        <option value="grad_institute">خريج معهد</option>
+        <option value="grad_college">خريج كلية</option>
+        <option value="student_institute">طالب معهد</option>
+        <option value="intern_institute">امتياز معهد</option>
+        <option value="student_college">طالب كلية</option>
+        <option value="intern_college">امتياز كلية</option>
+      </select>
+    </div>
+
+    <div class="field" id="gradYearField" style="display:none;">
+      <label><span>سنة التخرج</span><span class="en">Graduation Year</span></label>
+      <input type="number" id="graduationYear" placeholder="مثال: 2022" min="1970">
+    </div>
+
     <div class="checkbox-field">
       <input type="checkbox" id="license">
       <label style="margin:0;">لدي ترخيص مزاولة مهنة <span class="en">I hold a practice license</span></label>
@@ -160,6 +178,17 @@
 </div>
 
 <script>
+  var academicStatusEl = document.getElementById('academicStatus');
+  var gradYearField = document.getElementById('gradYearField');
+  var gradYearInput = document.getElementById('graduationYear');
+
+  academicStatusEl.addEventListener('change', function() {
+    var isGrad = (academicStatusEl.value === 'grad_institute' || academicStatusEl.value === 'grad_college');
+    gradYearField.style.display = isGrad ? 'block' : 'none';
+    gradYearInput.required = isGrad;
+    if (!isGrad) gradYearInput.value = '';
+  });
+
   document.getElementById('staffForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     e.stopPropagation();
@@ -178,7 +207,9 @@
       phone: document.getElementById('phone').value,
       residence: document.getElementById('residence').value,
       availability: document.getElementById('availability').value,
-      hasLicense: document.getElementById('license').checked
+      hasLicense: document.getElementById('license').checked,
+      academicStatus: academicStatusEl.value,
+      graduationYear: gradYearInput.value || undefined
     };
 
     btn.disabled = true;
