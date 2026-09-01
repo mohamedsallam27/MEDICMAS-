@@ -7,9 +7,10 @@ router.post('/', async (req, res) => {
   try {
     const staff = new Staff(req.body);
     await staff.save();
-    res.status(201).json({ message: 'تم التسجيل بنجاح' });
+    res.status(201).json({ message: 'التسجيل بنجاح' });
   } catch (err) {
-    res.status(400).json({ error: 'حدث خطأ في التسجيل', details: err.message });
+    console.error('STAFF SAVE ERROR:', err);
+    res.status(400).json({ error: 'خطأ في التسجيل', message: err.message });
   }
 });
 
@@ -27,7 +28,7 @@ router.put('/:id', adminAuth, async (req, res) => {
     );
     res.json(updated);
   } catch (err) {
-    res.status(400).json({ error: 'حدث خطأ في التعديل', details: err.message });
+    res.status(400).json({ error: 'خطأ في التعديل' });
   }
 });
 
