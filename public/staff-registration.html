@@ -246,3 +246,56 @@
           <option>تمريض قلب</option>
           <option>تمريض كلى وغسيل كلوي</option>
           <option>تمريض أورام</option>
+          <option>تمريض تعقيم مركزي</option>
+            </optgroup>
+
+            <optgroup label="الأطباء — Doctors">
+              <option>طبيب عام</option>
+              <option>طبيب باطنة</option>
+              <option>طبيب جراحة</option>
+              <option>طبيب أطفال</option>
+              <option>طبيب نساء وتوليد</option>
+              <option>طبيب طوارئ</option>
+              <option>طبيب عناية مركزة</option>
+              <option>طبيب تخدير</option>
+              <option>طبيب قلب</option>
+              <option>أخرى</option>
+            </optgroup>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>البريد الإلكتروني <span class="en">Email (Gmail)</span></label>
+          <input type="email" id="email" placeholder="example@gmail.com" required>
+        </div>
+
+        <div class="field">
+          <label>رقم الهاتف / واتساب <span class="en">Phone / WhatsApp</span></label>
+          <input type="tel" id="phone" placeholder="01xxxxxxxxx" required>
+        </div>
+
+        <div class="field">
+          <label>محل الإقامة <span class="en">Place of Residence</span></label>
+          <input type="text" id="residence" placeholder="المدينة / المحافظة" required>
+        </div>
+
+        <div class="field">
+          <label>نوع الدوام <span class="en">Availability</span></label>
+          <select id="availability" required>
+            <option value="">اختر نوع الدوام</option>
+            <option value="full">دوام كامل</option>
+            <option value="part">دوام جزئي</option>
+          </select>
+        </div>
+
+        <div class="field" style="display:flex;align-items:center;gap:10px;">
+          <input type="checkbox" id="license" style="width:auto;">
+          <label style="margin:0;">لدي ترخيص مزاولة مهنة <span class="en">I hold a practice license</span></label>
+        </div>
+
+        <button type="submit" id="submitBtn">تسجيل / Submit</button>
+        <div id="msg"></div>
+      </form>
+    </div>
+  </body>
+</html>
