@@ -129,6 +129,15 @@
   ];
   const qualifications = ["طالب","فني","أخصائي","ماجيستير","دكتوراه","زمالة","استشاري"];
 
+  const academicStatusLabels = {
+    grad_institute: "خريج معهد",
+    grad_college: "خريج كلية",
+    student_institute: "طالب معهد",
+    intern_institute: "امتياز معهد",
+    student_college: "طالب كلية",
+    intern_college: "امتياز كلية"
+  };
+
   document.getElementById('loginBtn').addEventListener('click', login);
   document.getElementById('passwordInput').addEventListener('keydown', e => { if(e.key === 'Enter') login(); });
 
@@ -181,6 +190,8 @@
       const el = document.createElement('div');
       el.className = 'entry';
       if(currentTab === 'staff'){
+        const academicLabel = academicStatusLabels[item.academicStatus] || '—';
+        const isGrad = (item.academicStatus === 'grad_institute' || item.academicStatus === 'grad_college');
         el.innerHTML = `
           <div class="entry-row"><span class="label">الاسم</span><span class="value" dir="rtl-val">${item.fullName}</span></div>
           <div class="entry-row"><span class="label">التخصص</span><span class="value" dir="rtl-val">${item.specialty}</span></div>
@@ -190,6 +201,8 @@
           <div class="entry-row"><span class="label">Gmail</span><span class="value">${item.gmail}</span></div>
           <div class="entry-row"><span class="label">الإقامة</span><span class="value" dir="rtl-val">${item.residence}</span></div>
           <div class="entry-row"><span class="label">الدوام</span><span class="value" dir="rtl-val">${item.availability === 'full' ? 'كامل' : 'جزئي'}</span></div>
+          <div class="entry-row"><span class="label">الحالة الدراسية</span><span class="value" dir="rtl-val">${academicLabel}</span></div>
+          ${isGrad ? `<div class="entry-row"><span class="label">سنة التخرج</span><span class="value">${item.graduationYear || '—'}</span></div>` : ''}
         `;
       } else {
         el.innerHTML = `
@@ -212,6 +225,7 @@
   function openEdit(item){
     const box = document.getElementById('editBox');
     if(currentTab === 'staff'){
+      const isGrad = (item.academicStatus === 'grad_institute' || item.academicStatus === 'grad_college');
       box.innerHTML = `
         <label>الاسم رباعي<input id="e_fullName" value="${item.fullName}"></label>
         <label>عدد سنين الخبرة<input id="e_yearsExperience" type="number" value="${item.yearsExperience}"></label>
@@ -224,11 +238,24 @@
           <option value="full" ${item.availability==='full'?'selected':''}>كامل</option>
           <option value="part" ${item.availability==='part'?'selected':''}>جزئي</option>
         </select></label>
+        <label>الحالة الدراسية<select id="e_academicStatus">
+          <option value="grad_institute" ${item.academicStatus==='grad_institute'?'selected':''}>خريج معهد</option>
+          <option value="grad_college" ${item.academicStatus==='grad_college'?'selected':''}>خريج كلية</option>
+          <option value="student_institute" ${item.academicStatus==='student_institute'?'selected':''}>طالب معهد</option>
+          <option value="intern_institute" ${item.academicStatus==='intern_institute'?'selected':''}>امتياز معهد</option>
+          <option value="student_college" ${item.academicStatus==='student_college'?'selected':''}>طالب كلية</option>
+          <option value="intern_college" ${item.academicStatus==='intern_college'?'selected':''}>امتياز كلية</option>
+        </select></label>
+        <label id="e_gradYearLabel" style="display:${isGrad ? 'block' : 'none'};">سنة التخرج<input id="e_graduationYear" type="number" value="${item.graduationYear || ''}"></label>
         <div class="btn-row">
           <button class="save-btn" id="saveBtn">حفظ</button>
           <button class="cancel-btn" id="cancelBtn">إلغاء</button>
         </div>
       `;
+      document.getElementById('e_academicStatus').addEventListener('change', function(){
+        const grad = (this.value === 'grad_institute' || this.value === 'grad_college');
+        document.getElementById('e_gradYearLabel').style.display = grad ? 'block' : 'none';
+      });
     } else {
       box.innerHTML = `
         <label>اسم المستشفى<input id="e_hospitalName" value="${item.hospitalName}"></label>
@@ -262,7 +289,9 @@
         phone: document.getElementById('e_phone').value,
         gmail: document.getElementById('e_gmail').value,
         residence: document.getElementById('e_residence').value,
-        availability: document.getElementById('e_availability').value
+        availability: document.getElementById('e_availability').value,
+        academicStatus: document.getElementById('e_academicStatus').value,
+        graduationYear: document.getElementById('e_graduationYear').value ? Number(document.getElementById('e_graduationYear').value) : undefined
       };
       url = `/api/staff/${item._id}`;
     } else {
