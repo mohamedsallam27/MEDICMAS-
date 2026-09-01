@@ -53,6 +53,9 @@
     font-size:16px; color:var(--gold-soft); margin:34px 0 14px;
     padding-bottom:8px; border-bottom:1px solid rgba(212,175,55,0.25);
   }
+  .section-note{
+    font-size:13px; color:var(--gold-dim); margin-top:-10px; margin-bottom:20px; line-height:1.6;
+  }
   .salary-grid{ display:flex; flex-direction:column; gap:14px; }
   .salary-row{
     display:flex; align-items:center; gap:12px;
@@ -145,7 +148,7 @@
       <textarea id="benefits" placeholder="مثال: تأمين طبي، سكن، مواصلات..."></textarea>
     </div>
 
-    <div class="section-title">العرض المالي حسب المؤهل (اختياري) — Salary by Qualification</div>
+    <div class="section-title">العرض المالي حسب المؤهل (املأ خانة واحدة على الأقل) — Salary by Qualification</div>
     <div class="salary-grid">
       <div class="salary-row">
         <label>خريج كلية</label>
@@ -173,6 +176,21 @@
       </div>
     </div>
 
+    <div class="section-title">بيانات المسجّل — Registrant Info</div>
+    <div class="field">
+      <label><span>اسم المسجّل</span><span class="en">Registrant Name</span></label>
+      <input type="text" id="contactName" placeholder="الاسم بالكامل" required>
+    </div>
+    <div class="field">
+      <label><span>الوظيفة في المستشفى</span><span class="en">Job Title</span></label>
+      <input type="text" id="contactJobTitle" placeholder="مثال: مسؤول موارد بشرية" required>
+    </div>
+    <div class="field">
+      <label><span>رقم التواصل</span><span class="en">Contact Number</span></label>
+      <input type="tel" id="contactPhone" placeholder="01xxxxxxxxx" required>
+    </div>
+    <div class="section-note">يجب ملء هذه البيانات بواسطة موظف الموارد البشرية بالمستشفى</div>
+
     <button type="submit" class="submit-btn" id="submitBtn">تسجيل / Submit</button>
     <div class="msg" id="msg"></div>
   </form>
@@ -186,22 +204,49 @@
     msg.textContent = '';
     msg.className = 'msg';
 
+    const salaryLabels = {
+      collegeGrad: 'خريج كلية',
+      instituteGrad: 'خريج معهد',
+      collegeIntern: 'امتياز كلية',
+      instituteIntern: 'امتياز معهد',
+      collegeStudent: 'طالب كلية',
+      instituteStudent: 'طالب معهد'
+    };
+
+    const salaryByQualification = {
+      collegeGrad: document.getElementById('salaryCollegeGrad').value,
+      instituteGrad: document.getElementById('salaryInstituteGrad').value,
+      collegeIntern: document.getElementById('salaryCollegeIntern').value,
+      instituteIntern: document.getElementById('salaryInstituteIntern').value,
+      collegeStudent: document.getElementById('salaryCollegeStudent').value,
+      instituteStudent: document.getElementById('salaryInstituteStudent').value
+    };
+
+    const filledEntries = Object.keys(salaryByQualification).filter(k => salaryByQualification[k]);
+
+    if (filledEntries.length === 0) {
+      msg.textContent = 'يجب إدخال عرض مالي واحد على الأقل';
+      msg.className = 'msg error';
+      return;
+    }
+
+    const financialOffer = filledEntries
+      .map(k => salaryLabels[k] + ': ' + salaryByQualification[k] + ' جنيه')
+      .join(' | ');
+
     const data = {
       hospitalName: document.getElementById('hospitalName').value,
       email: document.getElementById('email').value,
       phone: document.getElementById('phone').value,
       location: document.getElementById('location').value,
-      specialty: document.getElementById('specialty').value,
+      specialtyNeeded: document.getElementById('specialty').value,
       qualification: document.getElementById('qualification').value,
       benefits: document.getElementById('benefits').value,
-      salary: {
-        collegeGrad: document.getElementById('salaryCollegeGrad').value,
-        instituteGrad: document.getElementById('salaryInstituteGrad').value,
-        collegeIntern: document.getElementById('salaryCollegeIntern').value,
-        instituteIntern: document.getElementById('salaryInstituteIntern').value,
-        collegeStudent: document.getElementById('salaryCollegeStudent').value,
-        instituteStudent: document.getElementById('salaryInstituteStudent').value
-      }
+      financialOffer: financialOffer,
+      salaryByQualification: salaryByQualification,
+      contactName: document.getElementById('contactName').value,
+      contactJobTitle: document.getElementById('contactJobTitle').value,
+      contactPhone: document.getElementById('contactPhone').value
     };
 
     btn.disabled = true;
