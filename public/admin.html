@@ -207,10 +207,16 @@
       } else {
         el.innerHTML = `
           <div class="entry-row"><span class="label">المستشفى</span><span class="value" dir="rtl-val">${item.hospitalName}</span></div>
+          <div class="entry-row"><span class="label">البريد الإلكتروني</span><span class="value">${item.email || '—'}</span></div>
+          <div class="entry-row"><span class="label">الهاتف</span><span class="value">${item.phone || '—'}</span></div>
+          <div class="entry-row"><span class="label">الموقع</span><span class="value" dir="rtl-val">${item.location || '—'}</span></div>
           <div class="entry-row"><span class="label">التخصص المطلوب</span><span class="value" dir="rtl-val">${item.specialtyNeeded}</span></div>
           <div class="entry-row"><span class="label">العرض المالي</span><span class="value" dir="rtl-val">${item.financialOffer}</span></div>
           <div class="entry-row"><span class="label">الامتيازات</span><span class="value" dir="rtl-val">${item.benefits || '—'}</span></div>
           <div class="entry-row"><span class="label">المؤهل</span><span class="value" dir="rtl-val">${item.qualification}</span></div>
+          <div class="entry-row"><span class="label">اسم المسجّل</span><span class="value" dir="rtl-val">${item.contactName || '—'}</span></div>
+          <div class="entry-row"><span class="label">وظيفته</span><span class="value" dir="rtl-val">${item.contactJobTitle || '—'}</span></div>
+          <div class="entry-row"><span class="label">رقم تواصل المسجّل</span><span class="value">${item.contactPhone || '—'}</span></div>
         `;
       }
       const btn = document.createElement('button');
@@ -259,10 +265,16 @@
     } else {
       box.innerHTML = `
         <label>اسم المستشفى<input id="e_hospitalName" value="${item.hospitalName}"></label>
+        <label>البريد الإلكتروني<input id="e_email" value="${item.email || ''}"></label>
+        <label>الهاتف<input id="e_phone" value="${item.phone || ''}"></label>
+        <label>الموقع<input id="e_location" value="${item.location || ''}"></label>
         <label>التخصص المطلوب<select id="e_specialtyNeeded">${specialties.map(s=>`<option ${s===item.specialtyNeeded?'selected':''}>${s}</option>`).join('')}</select></label>
         <label>العرض المالي<input id="e_financialOffer" value="${item.financialOffer}"></label>
         <label>الامتيازات<textarea id="e_benefits">${item.benefits || ''}</textarea></label>
         <label>المؤهل<select id="e_qualification">${qualifications.map(q=>`<option ${q===item.qualification?'selected':''}>${q}</option>`).join('')}</select></label>
+        <label>اسم المسجّل<input id="e_contactName" value="${item.contactName || ''}"></label>
+        <label>وظيفته في المستشفى<input id="e_contactJobTitle" value="${item.contactJobTitle || ''}"></label>
+        <label>رقم تواصل المسجّل<input id="e_contactPhone" value="${item.contactPhone || ''}"></label>
         <div class="btn-row">
           <button class="save-btn" id="saveBtn">حفظ</button>
           <button class="cancel-btn" id="cancelBtn">إلغاء</button>
@@ -297,10 +309,16 @@
     } else {
       payload = {
         hospitalName: document.getElementById('e_hospitalName').value,
+        email: document.getElementById('e_email').value,
+        phone: document.getElementById('e_phone').value,
+        location: document.getElementById('e_location').value,
         specialtyNeeded: document.getElementById('e_specialtyNeeded').value,
         financialOffer: document.getElementById('e_financialOffer').value,
         benefits: document.getElementById('e_benefits').value,
-        qualification: document.getElementById('e_qualification').value
+        qualification: document.getElementById('e_qualification').value,
+        contactName: document.getElementById('e_contactName').value,
+        contactJobTitle: document.getElementById('e_contactJobTitle').value,
+        contactPhone: document.getElementById('e_contactPhone').value
       };
       url = `/api/hospital/${item._id}`;
     }
