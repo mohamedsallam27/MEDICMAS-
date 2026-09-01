@@ -2,10 +2,10 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MEDICMAS — تسجيل المستشفيات</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&family=Cormorant+Garamond:wght@600&display=swap" rel="stylesheet">
 <style>
   :root{
     --navy-deep:#0a1830;
@@ -16,104 +16,220 @@
     --gold-dim:#8a7332;
     --ivory:#f3efe4;
     --ivory-dim:#c9c4b6;
-    --field-bg:rgba(255,255,255,0.03);
-    --field-border:rgba(201,162,77,0.35);
   }
   *{margin:0;padding:0;box-sizing:border-box;}
   html,body{height:100%;}
   body{
-    background:
-      radial-gradient(ellipse 900px 500px at 50% -10%, var(--navy-mid) 0%, var(--navy) 45%, var(--navy-deep) 100%);
+    background: radial-gradient(ellipse 900px 600px at 50% 0%, var(--navy-mid), var(--navy-deep));
     font-family:'Tajawal',sans-serif;
     color:var(--ivory);
     min-height:100vh;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
+    padding:20px;
   }
-
-  .wrap{ width:100%; max-width:480px; padding:36px 22px 50px; }
-
-  .topbar{ display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
-  .back{ color:var(--gold); font-size:22px; text-decoration:none; line-height:1; }
-  .wordmark-mini{ font-family:'Cormorant Garamond', serif; font-weight:600; font-size:20px; color:var(--gold-soft); direction:ltr; }
-  .wordmark-mini span{ color:var(--ivory); font-weight:500; }
-
-  .header{ margin-top:22px; margin-bottom:6px; }
-  .title-ar{ font-size:23px; font-weight:700; color:var(--ivory); }
-  .title-en{ font-size:12px; color:var(--gold-dim); direction:ltr; margin-top:4px; letter-spacing:0.4px; }
-
-  .rule{ width:64px; height:1px; background:linear-gradient(to right, var(--gold), transparent); margin:16px 0 26px; }
-
-  form{ display:flex; flex-direction:column; gap:18px; }
-
-  .field label{ display:block; font-size:13.5px; font-weight:500; color:var(--ivory-dim); margin-bottom:7px; }
-  .field label .en{ font-size:10.5px; color:var(--gold-dim); direction:ltr; display:inline-block; margin-right:6px; }
-  .field .hint{ font-size:11.5px; color:var(--ivory-dim); opacity:0.7; margin-top:6px; }
-
-  .field input[type="text"],
-  .field input[type="number"],
-  .field textarea,
-  .field select{
-    width:100%;
-    background:var(--field-bg);
-    border:1px solid var(--field-border);
-    border-radius:5px;
-    padding:12px 14px;
+  .container{ max-width:600px; margin:0 auto; }
+  .header{ display:flex; justify-content:space-between; align-items:center; padding:20px 0; }
+  .logo{ font-family:'Cormorant Garamond',serif; font-size:28px; font-weight:600; color:var(--gold-soft); }
+  .logo span{ color:var(--ivory); }
+  h1{ font-size:30px; margin:20px 0 5px; color:var(--ivory); }
+  .subtitle{ color:var(--gold); font-size:15px; margin-bottom:20px; direction:ltr; text-align:right; }
+  .divider{ width:60px; height:2px; background:linear-gradient(to right, transparent, var(--gold), transparent); margin:20px 0; }
+  .field{ margin-bottom:22px; }
+  label{ display:flex; justify-content:space-between; font-size:15px; margin-bottom:8px; color:#e8e8e8; }
+  label .en{ color:var(--gold-dim); font-size:13px; direction:ltr; }
+  input, select, textarea{
+    width:100%; padding:14px 16px;
+    background: rgba(255,255,255,0.04);
+    border:1px solid rgba(212,175,55,0.4);
+    border-radius:10px;
+    color:#fff; font-size:16px;
     font-family:'Tajawal',sans-serif;
-    font-size:15px;
-    color:var(--ivory);
-    outline:none;
-    appearance:none;
-    -webkit-appearance:none;
   }
+  input::placeholder, textarea::placeholder{ color:rgba(255,255,255,0.35); }
+  input:focus, select:focus, textarea:focus{ outline:none; border-color:var(--gold); }
+  select option{ background:var(--navy); color:#fff; }
+  textarea{ resize:vertical; min-height:90px; }
 
-  .field textarea{ resize:vertical; min-height:80px; line-height:1.6; }
-
-  .field select{
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23c9a24d' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-    background-repeat:no-repeat;
-    background-position:left 14px center;
-    padding-left:32px;
+  .section-title{
+    font-size:16px; color:var(--gold-soft); margin:34px 0 14px;
+    padding-bottom:8px; border-bottom:1px solid rgba(212,175,55,0.25);
   }
-  .field select option{ background:#0f2044; color:var(--ivory); }
-  optgroup{ font-weight:700; color:var(--gold); font-style:normal; }
-
-  .field input:focus, .field select:focus, .field textarea:focus{ border-color:var(--gold); }
-  .field input::placeholder, .field textarea::placeholder{ color:rgba(243,239,228,0.35); }
-
-  .qual-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:10px;
+  .salary-grid{ display:flex; flex-direction:column; gap:14px; }
+  .salary-row{
+    display:flex; align-items:center; gap:12px;
+    background:rgba(255,255,255,0.03);
+    border:1px solid rgba(212,175,55,0.2);
+    border-radius:10px; padding:10px 14px;
   }
+  .salary-row label{ flex:1; margin:0; font-size:14px; }
+  .salary-row input{ width:130px; padding:10px 12px; font-size:14px; }
 
-  .qual-opt{
-    border:1px solid var(--field-border);
-    border-radius:5px;
-    padding:12px 8px;
-    text-align:center;
-    cursor:pointer;
-    font-size:13.5px;
-    font-weight:500;
-    color:var(--ivory-dim);
-    position:relative;
-  }
-  .qual-opt input{ position:absolute; opacity:0; inset:0; cursor:pointer; }
-  .qual-opt.checked{ border-color:var(--gold); color:var(--gold-soft); background:rgba(201,162,77,0.08); }
-
-  .submit-btn{
-    margin-top:10px;
-    background:linear-gradient(180deg, var(--gold-soft), var(--gold));
-    color:var(--navy-deep);
-    border:none;
-    border-radius:5px;
-    padding:15px;
+  button.submit-btn{
+    width:100%; padding:16px;
+    background:var(--gold); color:var(--navy-deep);
+    border:none; border-radius:10px;
+    font-size:18px; font-weight:700;
+    cursor:pointer; margin-top:24px;
     font-family:'Tajawal',sans-serif;
-    font-size:16px;
-    font-weight:700;
-    cursor:pointer;
   }
-  .submit-btn:active{ opacity:0.85; }
+  button.submit-btn:disabled{ opacity:0.6; }
+  .msg{ margin-top:15px; text-align:center; font-size:15px; }
+  .msg.success{ color:#4ade80; }
+  .msg.error{ color:#f87171; }
+  .back{ color:var(--gold-dim); text-decoration:none; font-size:22px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="logo">MEDIC<span>MAS</span></div>
+    <a href="index.html" class="back">‹</a>
+  </div>
 
-  .note{ margin-top:14px; font-size:12px; color:var(--ivory-dim); text-align:center; line-hei
+  <h1>تسجيل المستشفيات</h1>
+  <div class="subtitle">Hospital Registration</div>
+  <div class="divider"></div>
+
+  <form id="hospitalForm">
+    <div class="field">
+      <label><span>اسم المستشفى</span><span class="en">Hospital Name</span></label>
+      <input type="text" id="hospitalName" placeholder="اسم المستشفى" required>
+    </div>
+
+    <div class="field">
+      <label><span>البريد الإلكتروني</span><span class="en">Email</span></label>
+      <input type="email" id="email" placeholder="example@gmail.com" required>
+    </div>
+
+    <div class="field">
+      <label><span>رقم الهاتف / واتساب</span><span class="en">Phone / WhatsApp</span></label>
+      <input type="tel" id="phone" placeholder="01xxxxxxxxx" required>
+    </div>
+
+    <div class="field">
+      <label><span>محل المستشفى</span><span class="en">Location</span></label>
+      <input type="text" id="location" placeholder="المدينة / المحافظة" required>
+    </div>
+
+    <div class="field">
+      <label><span>التخصص المطلوب</span><span class="en">Specialty Needed</span></label>
+      <select id="specialty" required>
+        <option value="">اختر التخصص</option>
+        <option value="icu">تمريض عناية مركزة (ICU)</option>
+        <option value="er">تمريض طوارئ (ER)</option>
+        <option value="or">تمريض غرف عمليات</option>
+        <option value="pediatrics">تمريض أطفال</option>
+        <option value="internal">باطنة</option>
+        <option value="surgery">جراحة</option>
+        <option value="cardiology">قلب</option>
+        <option value="doctor_general">طبيب عام</option>
+        <option value="other">أخرى</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label><span>المؤهل المطلوب</span><span class="en">Required Qualification</span></label>
+      <select id="qualification" required>
+        <option value="">اختر المؤهل</option>
+        <option value="student">طالب</option>
+        <option value="technician">فني</option>
+        <option value="specialist">أخصائي</option>
+        <option value="masters">ماجستير</option>
+        <option value="doctorate">دكتوراه</option>
+        <option value="fellowship">زمالة</option>
+        <option value="consultant">إستشاري</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label><span>المميزات / المزايا المقدمة</span><span class="en">Benefits Offered</span></label>
+      <textarea id="benefits" placeholder="مثال: تأمين طبي، سكن، مواصلات..."></textarea>
+    </div>
+
+    <div class="section-title">العرض المالي حسب المؤهل (اختياري) — Salary by Qualification</div>
+    <div class="salary-grid">
+      <div class="salary-row">
+        <label>خريج كلية</label>
+        <input type="number" id="salaryCollegeGrad" placeholder="جنيه">
+      </div>
+      <div class="salary-row">
+        <label>خريج معهد</label>
+        <input type="number" id="salaryInstituteGrad" placeholder="جنيه">
+      </div>
+      <div class="salary-row">
+        <label>امتياز كلية</label>
+        <input type="number" id="salaryCollegeIntern" placeholder="جنيه">
+      </div>
+      <div class="salary-row">
+        <label>امتياز معهد</label>
+        <input type="number" id="salaryInstituteIntern" placeholder="جنيه">
+      </div>
+      <div class="salary-row">
+        <label>طالب كلية</label>
+        <input type="number" id="salaryCollegeStudent" placeholder="جنيه">
+      </div>
+      <div class="salary-row">
+        <label>طالب معهد</label>
+        <input type="number" id="salaryInstituteStudent" placeholder="جنيه">
+      </div>
+    </div>
+
+    <button type="submit" class="submit-btn" id="submitBtn">تسجيل / Submit</button>
+    <div class="msg" id="msg"></div>
+  </form>
+</div>
+
+<script>
+  document.getElementById('hospitalForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('submitBtn');
+    const msg = document.getElementById('msg');
+    msg.textContent = '';
+    msg.className = 'msg';
+
+    const data = {
+      hospitalName: document.getElementById('hospitalName').value,
+      email: document.getElementById('email').value,
+      phone: document.getElementById('phone').value,
+      location: document.getElementById('location').value,
+      specialty: document.getElementById('specialty').value,
+      qualification: document.getElementById('qualification').value,
+      benefits: document.getElementById('benefits').value,
+      salary: {
+        collegeGrad: document.getElementById('salaryCollegeGrad').value,
+        instituteGrad: document.getElementById('salaryInstituteGrad').value,
+        collegeIntern: document.getElementById('salaryCollegeIntern').value,
+        instituteIntern: document.getElementById('salaryInstituteIntern').value,
+        collegeStudent: document.getElementById('salaryCollegeStudent').value,
+        instituteStudent: document.getElementById('salaryInstituteStudent').value
+      }
+    };
+
+    btn.disabled = true;
+    btn.textContent = 'جاري الإرسال...';
+
+    try {
+      const res = await fetch('/api/hospital', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      if (res.ok) {
+        msg.textContent = 'تم التسجيل بنجاح ✅';
+        msg.className = 'msg success';
+        document.getElementById('hospitalForm').reset();
+      } else {
+        const err = await res.json().catch(() => ({}));
+        msg.textContent = 'حدث خطأ: ' + (err.message || 'حاول مرة أخرى');
+        msg.className = 'msg error';
+      }
+    } catch (err) {
+      msg.textContent = 'تعذر الاتصال بالخادم';
+      msg.className = 'msg error';
+    }
+
+    btn.disabled = false;
+    btn.textContent = 'تسجيل / Submit';
+  });
+</script>
+</body>
+</html>
