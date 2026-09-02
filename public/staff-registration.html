@@ -45,11 +45,18 @@
     color:#fff; font-size:16px;
     font-family:'Tajawal',sans-serif;
   }
+  input[type="file"]{
+    padding:10px;
+    font-size:14px;
+    color:var(--ivory-dim);
+  }
   input::placeholder{ color:rgba(255,255,255,0.35); }
   input:focus, select:focus{ outline:none; border-color:var(--gold); }
   select option{ background:var(--navy); color:#fff; }
   .checkbox-field{ display:flex; align-items:center; gap:10px; margin-bottom:22px; }
   .checkbox-field input{ width:auto; }
+  .section-title{ font-size:17px; color:var(--gold-soft); margin:30px 0 15px; padding-bottom:8px; border-bottom:1px solid rgba(212,175,55,0.25); }
+  .hint{ font-size:12px; color:var(--ivory-dim); margin-top:6px; }
   button.submit-btn{
     width:100%; padding:16px;
     background:var(--gold); color:var(--navy-deep);
@@ -167,9 +174,47 @@
       <input type="number" id="graduationYear" placeholder="مثال: 2022" min="1970">
     </div>
 
+    <div class="field" id="workplaceField" style="display:none;">
+      <label><span>مكان العمل الحكومي</span><span class="en">Government Workplace</span></label>
+      <input type="text" id="governmentWorkplace" placeholder="اسم المستشفى / الجهة الحكومية">
+    </div>
+
     <div class="checkbox-field">
       <input type="checkbox" id="license">
       <label style="margin:0;">لدي ترخيص مزاولة مهنة <span class="en">I hold a practice license</span></label>
+    </div>
+
+    <div class="section-title">المستندات المطلوبة — Required Documents</div>
+
+    <div class="field">
+      <label><span>صورة البطاقة الشخصية (وش)</span><span class="en">ID Card — Front</span></label>
+      <input type="file" id="idCardFront" accept="image/*" required>
+    </div>
+
+    <div class="field">
+      <label><span>صورة البطاقة الشخصية (ضهر)</span><span class="en">ID Card — Back</span></label>
+      <input type="file" id="idCardBack" accept="image/*" required>
+    </div>
+
+    <div class="field" id="internshipField" style="display:none;">
+      <label><span>صورة إفادة الامتياز</span><span class="en">Internship Certificate</span></label>
+      <input type="file" id="internshipCertificate" accept="image/*">
+    </div>
+
+    <div class="field" id="licenseCardField" style="display:none;">
+      <label><span>صورة كارنيه مزاولة المهنة</span><span class="en">Practice License Card</span></label>
+      <input type="file" id="licenseCard" accept="image/*">
+    </div>
+
+    <div class="field">
+      <label><span>صورة شهادة الخبرة (إن وجدت)</span><span class="en">Experience Certificate (optional)</span></label>
+      <input type="file" id="experienceCertificate" accept="image/*">
+      <div class="hint">اختياري — ارفعها فقط لو اشتغلت قبل كدا</div>
+    </div>
+
+    <div class="field">
+      <label><span>صورة شخصية</span><span class="en">Personal Photo</span></label>
+      <input type="file" id="personalPhoto" accept="image/*" required>
     </div>
 
     <button type="submit" class="submit-btn" id="submitBtn">تسجيل / Submit</button>
@@ -181,12 +226,30 @@
   var academicStatusEl = document.getElementById('academicStatus');
   var gradYearField = document.getElementById('gradYearField');
   var gradYearInput = document.getElementById('graduationYear');
+  var workplaceField = document.getElementById('workplaceField');
+  var internshipField = document.getElementById('internshipField');
+  var licenseCardField = document.getElementById('licenseCardField');
 
   academicStatusEl.addEventListener('change', function() {
-    var isGrad = (academicStatusEl.value === 'grad_institute' || academicStatusEl.value === 'grad_college');
+    var val = academicStatusEl.value;
+    var isGrad = (val === 'grad_institute' || val === 'grad_college');
+    var isIntern = (val === 'intern_institute' || val === 'intern_college');
+
     gradYearField.style.display = isGrad ? 'block' : 'none';
     gradYearInput.required = isGrad;
     if (!isGrad) gradYearInput.value = '';
+
+    workplaceField.style.display = isGrad ? 'block' : 'none';
+    document.getElementById('governmentWorkplace').required = isGrad;
+    if (!isGrad) document.getElementById('governmentWorkplace').value = '';
+
+    internshipField.style.display = isIntern ? 'block' : 'none';
+    document.getElementById('internshipCertificate').required = isIntern;
+    if (!isIntern) document.getElementById('internshipCertificate').value = '';
+
+    licenseCardField.style.display = isGrad ? 'block' : 'none';
+    document.getElementById('licenseCard').required = isGrad;
+    if (!isGrad) document.getElementById('licenseCard').value = '';
   });
 
   document.getElementById('staffForm').addEventListener('submit', async function(e) {
@@ -198,19 +261,28 @@
     msg.textContent = '';
     msg.className = 'msg';
 
-    var data = {
-      fullName: document.getElementById('fullName').value,
-      yearsExperience: document.getElementById('experience').value,
-      age: document.getElementById('age').value,
-      specialty: document.getElementById('specialty').value,
-      gmail: document.getElementById('email').value,
-      phone: document.getElementById('phone').value,
-      residence: document.getElementById('residence').value,
-      availability: document.getElementById('availability').value,
-      hasLicense: document.getElementById('license').checked,
-      academicStatus: academicStatusEl.value,
-      graduationYear: gradYearInput.value || undefined
-    };
+    var formData = new FormData();
+    formData.append('fullName', document.getElementById('fullName').value);
+    formData.append('yearsExperience', document.getElementById('experience').value);
+    formData.append('age', document.getElementById('age').value);
+    formData.append('specialty', document.getElementById('specialty').value);
+    formData.append('gmail', document.getElementById('email').value);
+    formData.append('phone', document.getElementById('phone').value);
+    formData.append('residence', document.getElementById('residence').value);
+    formData.append('availability', document.getElementById('availability').value);
+    formData.append('hasLicense', document.getElementById('license').checked);
+    formData.append('academicStatus', academicStatusEl.value);
+    if (gradYearInput.value) formData.append('graduationYear', gradYearInput.value);
+    var workplaceVal = document.getElementById('governmentWorkplace').value;
+    if (workplaceVal) formData.append('governmentWorkplace', workplaceVal);
+
+    var fileFields = ['idCardFront', 'idCardBack', 'internshipCertificate', 'licenseCard', 'experienceCertificate', 'personalPhoto'];
+    fileFields.forEach(function(fieldId) {
+      var fileInput = document.getElementById(fieldId);
+      if (fileInput.files && fileInput.files[0]) {
+        formData.append(fieldId, fileInput.files[0]);
+      }
+    });
 
     btn.disabled = true;
     btn.textContent = 'جاري الإرسال...';
@@ -218,14 +290,17 @@
     try {
       var res = await fetch('/api/staff', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
+        body: formData
       });
 
       if (res.ok) {
-        msg.textContent = 'تم التسجيل بنجاح ✅';
+        msg.textContent = 'تم التسجيل بنجاح، طلبك الآن في انتظار مراجعة المسؤولين عن التطبيق على الأوراق المقدمة';
         msg.className = 'msg success';
         document.getElementById('staffForm').reset();
+        gradYearField.style.display = 'none';
+        workplaceField.style.display = 'none';
+        internshipField.style.display = 'none';
+        licenseCardField.style.display = 'none';
       } else {
         var errText = 'حدث خطأ (كود ' + res.status + ')';
         try {
