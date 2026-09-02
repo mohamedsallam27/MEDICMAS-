@@ -1,73 +1,51 @@
 const mongoose = require('mongoose');
 
-const staffSchema = new mongoose.Schema(
-  {
-    fullName: {
-      type: String,
-      required: true,
-      trim: true
-    },
-    yearsExperience: {
-      type: Number,
-      required: true,
-      min: 0
-    },
-    age: {
-      type: Number,
-      required: true,
-      min: 18
-    },
-    specialty: {
-      type: String,
-      required: true,
-      trim: true
-    },
-    phone: {
-      type: String,
-      required: true,
-      trim: true
-    },
-    gmail: {
-      type: String,
-      required: true,
-      trim: true,
-      lowercase: true
-    },
-    residence: {
-      type: String,
-      required: true,
-      trim: true
-    },
-    availability: {
-      type: String,
-      required: true,
-      enum: ['full', 'part']
-    },
-    hasLicense: {
-      type: Boolean,
-      default: false
-    },
-    academicStatus: {
-      type: String,
-      required: true,
-      enum: [
-        'grad_institute',
-        'grad_college',
-        'student_institute',
-        'intern_institute',
-        'student_college',
-        'intern_college'
-      ]
-    },
-    graduationYear: {
-      type: Number,
-      required: false,
-      min: 1970
-    }
+const staffSchema = new mongoose.Schema({
+  fullName: { type: String, required: true },
+  yearsExperience: { type: Number, required: true },
+  age: { type: Number, required: true },
+  specialty: { type: String, required: true },
+  phone: { type: String, required: true },
+  gmail: { type: String, required: true },
+  residence: { type: String, required: true },
+  availability: { type: String, enum: ['full', 'part'], required: true },
+
+  academicStatus: {
+    type: String,
+    enum: [
+      'grad_institute',
+      'grad_college',
+      'student_institute',
+      'intern_institute',
+      'student_college',
+      'intern_college'
+    ],
+    required: true
   },
-  {
-    timestamps: true
-  }
-);
+  graduationYear: { type: Number },
+
+  // مكان العمل الحكومي - يظهر فقط لخريج معهد / خريج كلية
+  governmentWorkplace: { type: String },
+
+  // المستندات المرفوعة
+  documents: {
+    idCardFront: { type: String },
+    idCardBack: { type: String },
+    internshipCertificate: { type: String },
+    licenseCard: { type: String },
+    experienceCertificate: { type: String },
+    personalPhoto: { type: String }
+  },
+
+  // حالة القبول
+  status: {
+    type: String,
+    enum: ['pending', 'accepted', 'rejected'],
+    default: 'pending'
+  },
+
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now }
+});
 
 module.exports = mongoose.model('Staff', staffSchema);
