@@ -152,7 +152,7 @@
 </head>
 <body>
   <div class="wrap">
-    <div class="wordmark">MEDIC<span>MAS</span></div>
+    <div class="wordmark" id="logoTitle" style="cursor:pointer;">MEDIC<span>MAS</span></div>
     <div class="rule"></div>
     <div class="tagline-ar">منصة تواصل الكوادر الطبية مع المستشفيات</div>
     <div class="tagline-en">Connecting Medical Staff & Hospitals</div>
@@ -184,6 +184,20 @@
     </div>
   </div>
 
-  <footer>© MEDICMAS &nbsp;·&nbsp; <a href="admin.html">لوحة التحكم</a></footer>
+  <footer>© MEDICMAS &nbsp;·&nbsp; <a href="admin.html" id="adminLink" style="display:none;">لوحة التحكم</a></footer>>
+  <script>
+let tapCount = 0;
+let tapTimer = null;
+document.getElementById('logoTitle').addEventListener('click', function() {
+  tapCount++;
+  clearTimeout(tapTimer);
+  tapTimer = setTimeout(() => { tapCount = 0; }, 3000);
+  if (tapCount === 7) {
+    document.getElementById('adminLink').style.display = 'inline';
+    tapCount = 0;
+  }
+});
+</script>
+</body>
 </body>
 </html>
