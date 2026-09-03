@@ -42,7 +42,7 @@
   .tabs{ display:flex; gap:10px; margin-bottom:22px; }
   .tab{
     flex:1; text-align:center; padding:12px; border:1px solid var(--field-border); border-radius:5px;
-    cursor:pointer; font-weight:700; font-size:14px; color:var(--ivory-dim);
+    cursor:pointer; font-weight:700; font-size:13px; color:var(--ivory-dim);
   }
   .tab.active{ border-color:var(--gold); color:var(--gold-soft); background:rgba(201,162,77,0.08); }
 
@@ -96,6 +96,9 @@
     width:100%; background:var(--field-bg); border:1px solid var(--field-border); border-radius:5px;
     padding:10px 12px; color:var(--ivory); font-family:'Tajawal',sans-serif; font-size:14px; margin-top:4px;
   }
+  #editBox .checkbox-row{ display:flex; flex-wrap:wrap; gap:8px; margin-top:4px; }
+  #editBox .checkbox-row label{ display:flex; align-items:center; gap:6px; font-size:13px; background:var(--field-bg); border:1px solid var(--field-border); border-radius:5px; padding:7px 10px; }
+  #editBox .checkbox-row input{ width:auto; margin:0; }
   #editBox .btn-row{ display:flex; gap:10px; margin-top:8px; }
   #editBox .save-btn{
     flex:1; background:linear-gradient(180deg, var(--gold-soft), var(--gold)); color:var(--navy-deep);
@@ -123,6 +126,7 @@
     <div class="tabs">
       <div class="tab active" data-tab="staff">الكوادر الطبية</div>
       <div class="tab" data-tab="hospital">المستشفيات</div>
+      <div class="tab" data-tab="nursingAssistant">مساعدين التمريض</div>
     </div>
     <div id="listContainer"></div>
   </div>
@@ -137,6 +141,7 @@
   let currentTab = 'staff';
   let staffData = [];
   let hospitalData = [];
+  let nursingAssistantData = [];
 
   const specialties = [
     "تمريض عام","تمريض عناية مركزة (ICU)","تمريض طوارئ (ER)","تمريض غرف عمليات","تمريض تخدير",
@@ -151,6 +156,7 @@
     "فني تخدير","فني طوارئ / إسعاف","أخصائي تغذية","أخصائي نفسي","أخصائي تخاطب","إدارة مستشفيات"
   ];
   const qualifications = ["طالب","فني","أخصائي","ماجيستير","دكتوراه","زمالة","استشاري"];
+  const naDepartments = ["عناية مركزة","أدوار","عمليات","طوارئ","عيادات","حضانات"];
 
   const academicStatusLabels = {
     grad_institute: "خريج معهد",
@@ -174,6 +180,19 @@
     licenseCard: "كارنيه المزاولة",
     experienceCertificate: "شهادة الخبرة",
     personalPhoto: "صورة شخصية"
+  };
+
+  const naDocLabels = {
+    idCardFront: "البطاقة (وش)",
+    idCardBack: "البطاقة (ضهر)",
+    qualificationCertificate: "صورة المؤهل الدراسي"
+  };
+
+  // Maps each tab to its API endpoint segment
+  const tabEndpoints = {
+    staff: 'staff',
+    hospital: 'hospital',
+    nursingAssistant: 'nursingassistant'
   };
 
   document.getElementById('loginBtn').addEventListener('click', login);
@@ -206,18 +225,25 @@
   });
 
   async function loadAll(){
-    const [s, h] = await Promise.all([
+    const [s, h, n] = await Promise.all([
       fetch('/api/staff', { headers:{'x-admin-password': adminPassword} }).then(r=>r.json()),
-      fetch('/api/hospital', { headers:{'x-admin-password': adminPassword} }).then(r=>r.json())
+      fetch('/api/hospital', { headers:{'x-admin-password': adminPassword} }).then(r=>r.json()),
+      fetch('/api/nursingassistant', { headers:{'x-admin-password': adminPassword} }).then(r=>r.json())
     ]);
-    staffData = s; hospitalData = h;
+    staffData = s; hospitalData = h; nursingAssistantData = n;
     render();
+  }
+
+  function getCurrentData(){
+    if(currentTab === 'staff') return staffData;
+    if(currentTab === 'hospital') return hospitalData;
+    return nursingAssistantData;
   }
 
   function render(){
     const container = document.getElementById('listContainer');
     container.innerHTML = '';
-    const data = currentTab === 'staff' ? staffData : hospitalData;
+    const data = getCurrentData();
 
     if(!data.length){
       container.innerHTML = '<div class="empty-msg">لا يوجد تسجيلات حتى الآن</div>';
@@ -279,7 +305,7 @@
         actionRow.appendChild(acceptBtn);
         actionRow.appendChild(rejectBtn);
         el.appendChild(actionRow);
-      } else {
+      } else if(currentTab === 'hospital'){
         el.innerHTML = `
           <div class="entry-row"><span class="label">المستشفى</span><span class="value" dir="rtl-val">${item.hospitalName}</span></div>
           <div class="entry-row"><span class="label">البريد الإلكتروني</span><span class="value">${item.email || '—'}</span></div>
@@ -293,6 +319,51 @@
           <div class="entry-row"><span class="label">وظيفته</span><span class="value" dir="rtl-val">${item.contactJobTitle || '—'}</span></div>
           <div class="entry-row"><span class="label">رقم تواصل المسجّل</span><span class="value">${item.contactPhone || '—'}</span></div>
         `;
+      } else {
+        const status = item.status || 'pending';
+        const docs = item.documents || {};
+        const departments = item.departments || [];
+
+        let docsHtml = '<div class="docs-title">المستندات المرفوعة</div><div class="docs-grid">';
+        let hasAnyDoc = false;
+        Object.keys(naDocLabels).forEach(key=>{
+          if(docs[key]){
+            hasAnyDoc = true;
+            docsHtml += `
+              <a class="doc-thumb" href="${docs[key]}" target="_blank" rel="noopener">
+                <img src="${docs[key]}" alt="${naDocLabels[key]}">
+                <div class="doc-label">${naDocLabels[key]}</div>
+              </a>`;
+          }
+        });
+        docsHtml += '</div>';
+        if(!hasAnyDoc) docsHtml = '<div class="no-doc">لم يتم رفع أي مستندات</div>';
+
+        el.innerHTML = `
+          <div class="entry-row"><span class="label">الحالة</span><span class="status-badge ${status}">${statusLabels[status]}</span></div>
+          <div class="entry-row"><span class="label">الاسم</span><span class="value" dir="rtl-val">${item.fullName}</span></div>
+          <div class="entry-row"><span class="label">السن</span><span class="value">${item.age}</span></div>
+          <div class="entry-row"><span class="label">الإقامة</span><span class="value" dir="rtl-val">${item.residence}</span></div>
+          <div class="entry-row"><span class="label">المؤهل الدراسي</span><span class="value" dir="rtl-val">${item.qualificationText || '—'}</span></div>
+          <div class="entry-row"><span class="label">الأقسام</span><span class="value" dir="rtl-val">${departments.length ? departments.join('، ') : '—'}</span></div>
+          ${docsHtml}
+        `;
+
+        const actionRow = document.createElement('div');
+        actionRow.className = 'action-row';
+        const acceptBtn = document.createElement('button');
+        acceptBtn.className = 'accept-btn';
+        acceptBtn.textContent = 'قبول';
+        acceptBtn.disabled = (status === 'accepted');
+        acceptBtn.addEventListener('click', ()=> updateStatus(item, 'accepted'));
+        const rejectBtn = document.createElement('button');
+        rejectBtn.className = 'reject-btn';
+        rejectBtn.textContent = 'رفض';
+        rejectBtn.disabled = (status === 'rejected');
+        rejectBtn.addEventListener('click', ()=> updateStatus(item, 'rejected'));
+        actionRow.appendChild(acceptBtn);
+        actionRow.appendChild(rejectBtn);
+        el.appendChild(actionRow);
       }
       const btn = document.createElement('button');
       btn.className = 'edit-btn';
@@ -304,8 +375,9 @@
   }
 
   async function updateStatus(item, newStatus){
+    const endpoint = tabEndpoints[currentTab];
     try{
-      const res = await fetch(`/api/staff/${item._id}`, {
+      const res = await fetch(`/api/${endpoint}/${item._id}`, {
         method:'PUT',
         headers:{'Content-Type':'application/json', 'x-admin-password': adminPassword},
         body: JSON.stringify({ status: newStatus })
@@ -358,7 +430,7 @@
         document.getElementById('e_gradYearLabel').style.display = grad ? 'block' : 'none';
         document.getElementById('e_workplaceLabel').style.display = grad ? 'block' : 'none';
       });
-    } else {
+    } else if(currentTab === 'hospital'){
       box.innerHTML = `
         <label>اسم المستشفى<input id="e_hospitalName" value="${item.hospitalName}"></label>
         <label>البريد الإلكتروني<input id="e_email" value="${item.email || ''}"></label>
@@ -376,6 +448,31 @@
           <button class="cancel-btn" id="cancelBtn">إلغاء</button>
         </div>
       `;
+    } else {
+      const currentDeps = item.departments || [];
+      box.innerHTML = `
+        <label>الاسم رباعي<input id="e_fullName" value="${item.fullName}"></label>
+        <label>السن<input id="e_age" type="number" value="${item.age}"></label>
+        <label>الإقامة<input id="e_residence" value="${item.residence}"></label>
+        <label>المؤهل الدراسي<input id="e_qualificationText" value="${item.qualificationText || ''}"></label>
+        <div>
+          <label style="margin-bottom:6px; display:block;">الأقسام</label>
+          <div class="checkbox-row">
+            ${naDepartments.map(d=>`
+              <label><input type="checkbox" class="e_dept" value="${d}" ${currentDeps.includes(d) ? 'checked' : ''}>${d}</label>
+            `).join('')}
+          </div>
+        </div>
+        <label>الحالة<select id="e_status">
+          <option value="pending" ${item.status==='pending' || !item.status ?'selected':''}>قيد المراجعة</option>
+          <option value="accepted" ${item.status==='accepted'?'selected':''}>مقبول</option>
+          <option value="rejected" ${item.status==='rejected'?'selected':''}>مرفوض</option>
+        </select></label>
+        <div class="btn-row">
+          <button class="save-btn" id="saveBtn">حفظ</button>
+          <button class="cancel-btn" id="cancelBtn">إلغاء</button>
+        </div>
+      `;
     }
 
     document.getElementById('editOverlay').style.display = 'flex';
@@ -388,7 +485,7 @@
   }
 
   async function saveEdit(item){
-    const endpoint = currentTab === 'staff' ? 'staff' : 'hospital';
+    const endpoint = tabEndpoints[currentTab];
     let payload = {};
     if(currentTab === 'staff'){
       payload = {
@@ -407,7 +504,7 @@
       const workplaceEl = document.getElementById('e_governmentWorkplace');
       if(gradYearEl) payload.graduationYear = gradYearEl.value;
       if(workplaceEl) payload.governmentWorkplace = workplaceEl.value;
-    } else {
+    } else if(currentTab === 'hospital'){
       payload = {
         hospitalName: document.getElementById('e_hospitalName').value,
         email: document.getElementById('e_email').value,
@@ -420,6 +517,16 @@
         contactName: document.getElementById('e_contactName').value,
         contactJobTitle: document.getElementById('e_contactJobTitle').value,
         contactPhone: document.getElementById('e_contactPhone').value
+      };
+    } else {
+      const checkedDeps = Array.from(document.querySelectorAll('.e_dept:checked')).map(cb=>cb.value);
+      payload = {
+        fullName: document.getElementById('e_fullName').value,
+        age: document.getElementById('e_age').value,
+        residence: document.getElementById('e_residence').value,
+        qualificationText: document.getElementById('e_qualificationText').value,
+        departments: checkedDeps,
+        status: document.getElementById('e_status').value
       };
     }
     try{
