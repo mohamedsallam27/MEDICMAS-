@@ -12,6 +12,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api/staff', require('./routes/staff'));
 app.use('/api/hospital', require('./routes/hospital'));
+app.use('/api/nursingassistant', require('./routes/nursingAssistant'));
 app.use('/api/admin', require('./routes/admin'));
 
 const PORT = process.env.PORT || 3000;
