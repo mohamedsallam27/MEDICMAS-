@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MEDICMAS — تسجيل مساعدين التمريض</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&family=Cormorant+Garamond:wght@600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy-deep:#0a1830;
+    --navy:#0f2044;
+    --navy-mid:#16305e;
+    --gold:#c9a24d;
+    --gold-soft:#e2c883;
+    --gold-dim:#8a7332;
+    --ivory:#f3efe4;
+    --ivory-dim:#c9c4b6;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{height:100%;}
+  body{
+    background: radial-gradient(ellipse 900px 600px at 50% 0%, var(--navy-mid), var(--navy-deep));
+    font-family:'Tajawal',sans-serif;
+    color:var(--ivory);
+    min-height:100vh;
+    padding:20px;
+  }
+  .container{ max-width:600px; margin:0 auto; }
+  .header{ display:flex; justify-content:space-between; align-items:center; padding:20px 0; }
+  .logo{ font-family:'Cormorant Garamond',serif; font-size:28px; font-weight:600; color:var(--gold-soft); }
+  .logo span{ color:var(--ivory); }
+  .back{ color:var(--gold-dim); text-decoration:none; font-size:22px; }
+  h1{ font-size:30px; margin:20px 0 5px; color:var(--ivory); }
+  .subtitle{ color:var(--gold); font-size:15px; margin-bottom:15px; direction:ltr; text-align:right; }
+  .motto{
+    text-align:center;
+    font-family:'Cormorant Garamond',serif;
+    font-size:19px;
+    color:var(--gold-soft);
+    line-height:1.7;
+    padding:16px 10px;
+    margin-bottom:10px;
+    border-top:1px solid rgba(212,175,55,0.25);
+    border-bottom:1px solid rgba(212,175,55,0.25);
+  }
+  .divider{ width:60px; height:2px; background:linear-gradient(to right, transparent, var(--gold), transparent); margin:20px 0; }
+  .field{ margin-bottom:22px; }
+  label{ display:flex; justify-content:space-between; font-size:15px; margin-bottom:8px; color:#e8e8e8; }
+  label .en{ color:var(--gold-dim); font-size:13px; direction:ltr; }
+  input, select{
+    width:100%; padding:14px 16px;
+    background: rgba(255,255,255,0.04);
+    border:1px solid rgba(212,175,55,0.4);
+    border-radius:10px;
+    color:#fff; font-size:16px;
+    font-family:'Tajawal',sans-serif;
+  }
+  input[type="file"]{
+    padding:10px;
+    font-size:14px;
+    color:var(--ivory-dim);
+  }
+  input::placeholder{ color:rgba(255,255,255,0.35); }
+  input:focus, select:focus{ outline:none; border-color:var(--gold); }
+  .section-title{ font-size:17px; color:var(--gold-soft); margin:30px 0 15px; padding-bottom:8px; border-bottom:1px solid rgba(212,175,55,0.25); }
+  .checkbox-group{
+    display:flex; flex-wrap:wrap; gap:10px;
+    margin-bottom:22px;
+  }
+  .checkbox-item{
+    display:flex; align-items:center; gap:8px;
+    background: rgba(255,255,255,0.04);
+    border:1px solid rgba(212,175,55,0.4);
+    border-radius:10px;
+    padding:10px 14px;
+    flex:1 1 auto;
+    min-width:130px;
+  }
+  .checkbox-item input{ width:auto; }
+  .checkbox-item label{ margin:0; font-size:14px; }
+  button.submit-btn{
+    width:100%; padding:16px;
+    background:var(--gold); color:var(--navy-deep);
+    border:none; border-radius:10px;
+    font-size:18px; font-weight:700;
+    cursor:pointer; margin-top:10px;
+    font-family:'Tajawal',sans-serif;
+  }
+  button.submit-btn:disabled{ opacity:0.6; }
+  .msg{ margin-top:15px; text-align:center; font-size:15px; min-height:20px; }
+  .msg.success{ color:#4ade80; }
+  .msg.error{ color:#f87171; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="logo">MEDIC<span>MAS</span></div>
+    <a href="index.html" class="back">‹</a>
+  </div>
+
+  <h1>تسجيل مساعدين التمريض</h1>
+  <div class="subtitle">Nursing Assistant Registration</div>
+
+  <div class="motto">مساعد التمريض قيمة لا يمكن اهمالها<br>لا تدع أحد يحدد قيمتك ، بالتوفيق دائماً</div>
+
+  <div class="divider"></div>
+
+  <form id="naForm">
+    <div class="field">
+      <label><span>الاسم رباعي</span><span class="en">Full Name</span></label>
+      <input type="text" id="fullName" placeholder="الاسم الأول والثاني والثالث والرابع" required>
+    </div>
+
+    <div class="field">
+      <label><span>السن</span><span class="en">Age</span></label>
+      <input type="number" id="age" placeholder="مثال: 25" required min="16">
+    </div>
+
+    <div class="field">
+      <label><span>محل الإقامة</span><span class="en">Place of Residence</span></label>
+      <input type="text" id="residence" placeholder="المدينة / المحافظة" required>
+    </div>
+
+    <div class="field">
+      <label><span>المؤهل الدراسي</span><span class="en">Academic Qualification</span></label>
+      <input type="text" id="qualificationText" placeholder="اكتب مؤهلك الدراسي" required>
+    </div>
+
+    <div class="section-title">الأقسام اللي اشتغلت فيها كمساعد تمريض — Departments Worked In</div>
+
+    <div class="checkbox-group">
+      <div class="checkbox-item">
+        <input type="checkbox" name="departments" value="عناية مركزة" id="dep1">
+        <label for="dep1">عناية مركزة</label>
+      </div>
+      <div class="checkbox-item">
+        <input type="checkbox" name="departments" value="أدوار" id="dep2">
+        <label for="dep2">أدوار</label>
+      </div>
+      <div class="checkbox-item">
+        <input type="checkbox" name="departments" value="عمليات" id="dep3">
+        <label for="dep3">عمليات</label>
+      </div>
+      <div class="checkbox-item">
+        <input type="checkbox" name="departments" value="طوارئ" id="dep4">
+        <label for="dep4">طوارئ</label>
+      </div>
+      <div class="checkbox-item">
+        <input type="checkbox" name="departments" value="عيادات" id="dep5">
+        <label for="dep5">عيادات</label>
+      </div>
+      <div class="checkbox-item">
+        <input type="checkbox" name="departments" value="حضانات" id="dep6">
+        <label for="dep6">حضانات</label>
+      </div>
+    </div>
+
+    <div class="section-title">المستندات المطلوبة — Required Documents</div>
+
+    <div class="field">
+      <label><span>صورة البطاقة الشخصية (وش)</span><span class="en">ID Card — Front</span></label>
+      <input type="file" id="idCardFront" accept="image/*" required>
+    </div>
+
+    <div class="field">
+      <label><span>صورة البطاقة الشخصية (ضهر)</span><span class="en">ID Card — Back</span></label>
+      <input type="file" id="idCardBack" accept="image/*" required>
+    </div>
+
+    <div class="field">
+      <label><span>صورة المؤهل الدراسي</span><span class="en">Qualification Certificate</span></label>
+      <input type="file" id="qualificationCertificate" accept="image/*" required>
+    </div>
+
+    <button type="submit" class="submit-btn" id="submitBtn">تسجيل / Submit</button>
+    <div class="msg" id="msg"></div>
+  </form>
+</div>
+
+<script>
+  document.getElementById('naForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    var btn = document.getElementById('submitBtn');
+    var msg = document.getElementById('msg');
+    msg.textContent = '';
+    msg.className = 'msg';
+
+    var formData = new FormData();
+    formData.append('fullName', document.getElementById('fullName').value);
+    formData.append('age', document.getElementById('age').value);
+    formData.append('residence', document.getElementById('residence').value);
+    formData.append('qualificationText', document.getElementById('qualificationText').value);
+
+    var checkedDeps = document.querySelectorAll('input[name="departments"]:checked');
+    checkedDeps.forEach(function(cb) {
+      formData.append('departments', cb.value);
+    });
+
+    var fileFields = ['idCardFront', 'idCardBack', 'qualificationCertificate'];
+    fileFields.forEach(function(fieldId) {
+      var fileInput = document.getElementById(fieldId);
+      if (fileInput.files && fileInput.files[0]) {
+        formData.append(fieldId, fileInput.files[0]);
+      }
+    });
+
+    btn.disabled = true;
+    btn.textContent = 'جاري الإرسال...';
+
+    try {
+      var res = await fetch('/api/nursingassistant', {
+        method: 'POST',
+        body: formData
+      });
+
+      if (res.ok) {
+        msg.textContent = 'تم التسجيل بنجاح، طلبك الآن في انتظار مراجعة المسؤولين عن التطبيق على الأوراق المقدمة';
+        msg.className = 'msg success';
+        document.getElementById('naForm').reset();
+      } else {
+        var errText = 'حدث خطأ (كود ' + res.status + ')';
+        try {
+          var errJson = await res.json();
+          if (errJson && errJson.message) errText = errJson.message;
+        } catch (parseErr) {}
+        msg.textContent = errText;
+        msg.className = 'msg error';
+      }
+    } catch (err) {
+      msg.textContent = 'تعذر الاتصال بالخادم: ' + err.message;
+      msg.className = 'msg error';
+    }
+
+    btn.disabled = false;
+    btn.textContent = 'تسجيل / Submit';
+
+    return false;
+  });
+</script>
+</body>
+<
